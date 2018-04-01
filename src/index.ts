@@ -1,25 +1,16 @@
 import * as ex from 'excalibur';
-import { LevelOne } from './scenes/level-one/level-one';
-import { Player } from './actors/player/player';
+import { Paddle } from './actors/paddle/paddle';
+import { Ball } from './actors/ball/ball';
 
-class Game extends ex.Engine {
-  constructor() {
-    super({ width: 800, height: 600, displayMode: ex.DisplayMode.FullScreen });
-  }
+const game = new ex.Engine({
+  width: 800,
+  height: 600
+});
 
-  public start() {
-    return super.start();
-  }
-}
-
-const game = new Game();
-const levelOne = new LevelOne();
-const player = new Player();
-
-levelOne.add(player);
-
-game.add('levelOne', levelOne);
+const player = new Paddle(game);
+const ball = new Ball(game);
 
 game.start().then(() => {
-  game.goToScene('levelOne');
+  game.add(player);
+  game.add(ball);
 });
