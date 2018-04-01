@@ -7,6 +7,8 @@ const game = new ex.Engine({
   height: 600
 });
 
+game.isDebug = true;
+
 const player = new Paddle(game);
 const ball = new Ball(game);
 
