@@ -2,21 +2,22 @@ import * as ex from 'excalibur';
 
 export class Ball extends ex.Actor {
   public game;
-  constructor(game) {
-    super();
-    this.game = game;
-    this.x = 100;
-    this.y = 300;
-    this.setWidth(20);
-    this.setHeight(20);
 
+  constructor(game) {
+    super({
+      x: 100,
+      y: 300,
+      width: 20,
+      height: 20
+    });
+
+    this.game = game;
+
+    this.collisionType = ex.CollisionType.Passive;
+    this.vel.setTo(200, 200);
     this.color = ex.Color.Red;
 
     this.draw = (ctx, delta) => {
-      // Optionally call original 'base' method
-      // ex.Actor.prototype.draw.call(this, ctx, delta)
-
-      // Custom draw code
       ctx.fillStyle = this.color.toString();
       ctx.beginPath();
       ctx.arc(this.pos.x, this.pos.y, 10, 0, Math.PI * 2);
@@ -24,36 +25,32 @@ export class Ball extends ex.Actor {
       ctx.fill();
     };
 
-    this.vel.setTo(0, 100);
+    this.registerPrecollision();
+    this.registerPostupdate();
+  }
 
-    this.collisionType = ex.CollisionType.Passive;
-
+  private registerPrecollision() {
     this.on('precollision', (e?: ex.PreCollisionEvent) => {
       var intersection = e.intersection.normalize();
 
-      // The largest component of intersection is our axis to flip
       if (Math.abs(intersection.x) > Math.abs(intersection.y)) {
         this.vel.x *= -1;
       } else {
         this.vel.y *= -1;
       }
     });
+  }
 
+  private registerPostupdate() {
     this.on('postupdate', () => {
-      // If the ball collides with the left side
-      // of the screen reverse the x velocity
       if (this.pos.x < this.getWidth() / 2) {
         this.vel.x *= -1;
       }
 
-      // If the ball collides with the right side
-      // of the screen reverse the x velocity
       if (this.pos.x + this.getWidth() / 2 > this.game.drawWidth) {
         this.vel.x *= -1;
       }
 
-      // If the ball collides with the top
-      // of the screen reverse the y velocity
       if (this.pos.y < this.getHeight() / 2) {
         this.vel.y *= -1;
       }

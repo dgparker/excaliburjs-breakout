@@ -4,7 +4,6 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
-  devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist'
   },
@@ -27,7 +26,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebPackPlugin({
-      title: 'Excalibur Seed'
+      title: 'Excalibur Seed',
+      minify: false
     })
   ]
 };
