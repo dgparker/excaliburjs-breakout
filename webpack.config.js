@@ -5,7 +5,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/index.ts',
   devServer: {
-    contentBase: './dist'
+    contentBase: ''
   },
   module: {
     rules: [
@@ -21,12 +21,11 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '')
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
     new HtmlWebPackPlugin({
-      title: 'Excalibur Seed',
+      title: 'Excaliburjs Breakout',
       minify: false
     })
   ]
